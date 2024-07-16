@@ -3,6 +3,7 @@
 // imports
 
     import { TIME_PERIOD_OPTIONS } from '~/constants'
+    import type { Transaction } from '~/types/index'
 
 // state
 
@@ -18,6 +19,26 @@
         return data
     })
 
+// computed
+
+    const sortedTransactionsByDate = computed(() => {
+        
+        const group: any = {}
+
+        transactions.value.forEach((transaction: Transaction)=> {
+            const date = new Date(transaction.created_at).toISOString().split('T')[0]
+            if(!group[date]){
+                group[date] = []
+            }
+
+            group[date].push(transaction)
+
+        });
+
+        return group
+
+    })
+    
 </script>
 
 <template>
@@ -44,11 +65,17 @@
 
         <section>
             
-            <Transaction 
-                v-for="(transaction, index) in transactions"
-                :key="index"
-                :transaction="transaction"
-            />
+            <div v-for="(transactions, date) in sortedTransactionsByDate" :key="date">
+                <DailyTransaction 
+                    :date="date" 
+                    :transactions="transactions" 
+                />
+                <Transaction 
+                    v-for="transaction in transactions" 
+                    :key="transaction.id" 
+                    :transaction="transaction" 
+                />
+            </div>
             
         </section>
 

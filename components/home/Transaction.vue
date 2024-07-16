@@ -6,7 +6,6 @@
 
 // props
 
-
     interface Props {
         transaction: Transaction
     }
@@ -39,7 +38,11 @@
     <div class="grid grid-cols-2 py-4 text-gray-900 border-b border-gray-200 dark:border-gray-800 dark:text-gray-100">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
-                <UIcon name="i-heroicons-arrow-up-right" class="text-lg text-green-600" />
+                <UIcon 
+                    :name="transaction.type == 'Income' ? 'i-heroicons-arrow-up-right' : 'i-heroicons-arrow-down-right'" 
+                    class="text-lg"
+                    :class="transaction.type == 'Income' ? 'green' : 'red'"
+                />
                 <span>{{ transaction.description }}</span>
             </div>
 
@@ -57,4 +60,14 @@
     </div>
 </template>
 
+<style scoped>
+
+    .green {
+        @apply text-green-600 dark:text-green-400;
+    }
+    .red {
+        @apply text-red-600 dark:text-red-400;
+    }
+
+</style>
 
