@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
@@ -15,5 +17,21 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(function ({ matchUtilities, addUtilities, theme }) {
+            addUtilities({
+                ".flex-center": {
+                    display: 'flex',
+                    'justify-content': 'center',
+                    'align-items': 'center'
+                },
+                ".flex-col-center": {
+                    display: 'flex',
+                    'flex-direction': 'column',
+                    'justify-content': 'center',
+                    'align-items': 'center'
+                },
+            })
+        })
+    ],
 }

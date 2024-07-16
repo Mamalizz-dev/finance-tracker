@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="container max-w-4xl">
+    <div class="container max-w-5xl">
 
         <Header />
 
