@@ -19,6 +19,10 @@ export default defineNuxtConfig({
         redirect: false
     },
 
+    imports: {
+        dirs: ['~/types/*.ts'],
+    },
+
     css: [
         '~/assets/css/tailwind.css',
         '~/assets/css/style.css'
