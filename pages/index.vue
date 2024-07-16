@@ -32,6 +32,13 @@
         </section>
 
 
+        <section>
+            <Transaction />
+            <Transaction />
+            <Transaction />
+            <Transaction />
+        </section>
+
     </div>
 </template>
 
