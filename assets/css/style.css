@@ -1,0 +1,4 @@
+body {
+    font-family: "Inter";
+    @apply dark:bg-gray-900 bg-white;
+}
