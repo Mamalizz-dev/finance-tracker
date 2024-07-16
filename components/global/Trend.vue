@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+// props
+
     interface Props {
         title: string,
         amount: number,
@@ -11,6 +13,12 @@
     const props = defineProps<Props>()
 
     const { amount, lastAmount } = toRefs(props)
+
+// state
+
+    const { currency } = useCurrency(amount)
+
+// computed
 
     const trendingUp = computed(() => amount.value >= lastAmount.value)
 
@@ -34,9 +42,9 @@
 
         <div class="font-semibold mb-0.5" :class="trendingUp ? 'green' : 'red'">{{ title }}</div>
 
-        <div class="text-2xl font-extrabold text-black dark:text-white mb-2">
+        <div class="text-2xl font-bold text-black dark:text-white mb-2">
             <USkeleton class="h-8 w-full" v-if="loading" />
-            <div v-else>{{ amount }}</div>
+            <div v-else>{{ currency }}</div>
         </div>
 
         <div>
