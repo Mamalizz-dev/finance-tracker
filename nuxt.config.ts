@@ -1,37 +1,42 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+    devtools: { enabled: true },
 
-  modules: [
-      '@nuxt/ui',
-      ['@nuxtjs/google-fonts', {
-          families: {
-              'Inter': true,
-              download: true,
-              inject: false
-          },
-          display: 'swap'
-      }]
-  ],
+    modules: [
+        '@nuxt/ui',
+        ['@nuxtjs/google-fonts', {
+            families: {
+                'Inter': true,
+                download: true,
+                inject: false
+            },
+            display: 'swap'
+        }],
+        "@nuxtjs/supabase"
+    ],
 
-  css: [
-      '~/assets/css/tailwind.css',
-      '~/assets/css/style.css'
-  ],
+    supabase: {
+        redirect: false
+    },
 
-  components: [
-      {
-          path: '~/components',
-          pathPrefix: false,
-      },
-  ],
+    css: [
+        '~/assets/css/tailwind.css',
+        '~/assets/css/style.css'
+    ],
 
-  postcss: {
-      plugins: {
-          tailwindcss: {},
-          autoprefixer: {},
-      },
-  },
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
 
-  compatibilityDate: '2024-07-16'
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        },
+    },
+
+    compatibilityDate: '2024-07-16'
 })
