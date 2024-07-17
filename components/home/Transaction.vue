@@ -3,6 +3,8 @@
 // imports
 
     import type { Transaction } from "~/types/index";
+    import { useApis } from '~/composables/useApis'
+    import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 // props
 
@@ -16,6 +18,9 @@
 
 // state
 
+    const queryClient = useQueryClient()
+    const toast = useToast()
+    
     const { currency } = useCurrency(transaction.value['amount']);
 
     const items = [
@@ -28,10 +33,42 @@
             {
                 label: "Delete",
                 icon: "i-heroicons-trash-20-solid",
-                click: () => console.log("Delete"),
+                click: () => handleDelete()
             },
         ],
     ];
+
+    const {
+        handleDeleteTransaction
+    } = useApis()
+    
+
+// queries
+
+    const { data, isPending, mutate } = useMutation({
+        mutationFn: (id: number) => handleDeleteTransaction(id)
+    })
+
+    const handleDelete = () => {
+        mutate(transaction.value['id'], {
+            onSuccess: () => {
+                toast.add({
+                    title: 'Transaction Deleted Successfully',
+                    icon: 'i-heroicons-check-circle',
+                    color: 'green'
+                })
+                queryClient.invalidateQueries({queryKey: ['transactions']})
+            },
+            onError: () => {
+                toast.add({
+                    title: 'Failed To Delete Transaction',
+                    icon: 'i-heroicons-x-mark-circle',
+                    color: 'red'
+                })
+            }
+        })
+    }
+
 </script>
 
 <template>
@@ -54,7 +91,7 @@
         <div class="flex items-center justify-end space-x-5">
             <span>{{ currency }}</span>
             <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
-                <UButton color="white" variant="ghost" trailing-icon="i-heroicons-list-bullet" class="transition-all hover:ring-2 hover:ring-gray-700" />
+                <UButton color="white" variant="ghost" trailing-icon="i-heroicons-list-bullet" class="transition-all hover:ring-2 hover:ring-gray-700" :loading="isPending" :disabled="isPending" />
             </UDropdown>
         </div>
     </div>

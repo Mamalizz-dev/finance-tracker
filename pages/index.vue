@@ -4,20 +4,29 @@
 
     import { TIME_PERIOD_OPTIONS } from '~/constants'
     import type { Transaction } from '~/types/index'
+    import { useApis } from '~/composables/useApis'
+    import { useQuery } from '@tanstack/vue-query'
 
 // state
 
     const { $supabases: supabases } = useNuxtApp()
-
+    const transactions = ref<Transaction[]>([])
     const timePeriod = ref<string>(TIME_PERIOD_OPTIONS[0])
+
+    const {
+        handleGetAllTransactions
+    } = useApis()
 
 // queries
 
-    const { data: transactions, pending } = await useAsyncData('transactions', async() => {
-        const { data, error, count } = await supabases.from('transactions').select()
-        if(error) return []
-        return data
+    const { isPending: isTransactionsPending } = useQuery({
+        queryKey: ['transactions'],
+        queryFn: (): Promise<Transaction[]> => handleGetAllTransactions(),
+        select: (data: Transaction[]) => {
+            transactions.value = [...data]
+        }
     })
+    
 
 // computed
 
@@ -65,7 +74,18 @@
 
         <section>
             
-            <div v-for="(transactions, date) in sortedTransactionsByDate" :key="date">
+            <div v-if="isTransactionsPending" class="flex flex-col gap-4">
+                <div class="flex justify-between w-full">
+                    <USkeleton class="w-24 h-8" />
+                    <div class="flex items-center gap-5">
+                        <USkeleton class="w-12 h-8" />
+                        <USkeleton class="w-16 h-8" />
+                    </div>
+                </div>
+                <USkeleton v-for="i in 3" :key="i" class="w-full h-16" />
+            </div>
+
+            <div v-else v-for="(transactions, date) in sortedTransactionsByDate" :key="date">
                 <DailyTransaction 
                     :date="date" 
                     :transactions="transactions" 
