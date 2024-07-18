@@ -56,7 +56,7 @@
                     icon: 'i-heroicons-check-circle',
                     color: 'green'
                 })
-                queryClient.invalidateQueries({queryKey: ['transactions']})
+                queryClient.resetQueries({queryKey: ['transactions']})
             },
             onError: () => {
                 toast.add({

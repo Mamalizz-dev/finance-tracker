@@ -131,7 +131,7 @@
 
             <div v-else-if="!transactions.length" class="w-full gap-3 border-2 border-gray-900 border-dashed rounded-lg flex-col-center h-52 dark:border-gray-600">
                 <UIcon name="i-heroicons-exclamation-triangle" class="text-4xl text-gray-500 dark:text-gray-400" />
-                <span class="text-gray-500 dark:text-gray-400 text-sm">
+                <span class="text-sm text-gray-500 dark:text-gray-400">
                     No Data In This Time Period
                 </span>
             </div>
