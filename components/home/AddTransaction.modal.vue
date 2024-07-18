@@ -85,7 +85,6 @@
 // methods
 
     const save = () => {
-        console.log(22);
         
         if (form.value.errors.length) return
 

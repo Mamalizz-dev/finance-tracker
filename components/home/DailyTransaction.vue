@@ -35,7 +35,7 @@
 
 <template>
 
-    <div class="grid grid-cols-2 py-4 font-bold text-gray-500 border-b border-gray-200 dark:border-gray-800 dark:text-gray-400">
+    <div class="grid grid-cols-2 py-4 font-bold text-gray-500 bg-gray-200 dark:bg-gray-800 px-4 rounded-md border-b border-gray-200 dark:border-gray-800 dark:text-gray-400">
         <div class="flex items-center justify-between">
             {{ date }}
         </div>

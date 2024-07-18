@@ -71,8 +71,8 @@
 </script>
 
 <template>
-    <div class="grid grid-cols-2 py-4 text-gray-900 border-b border-gray-200 dark:border-gray-800 dark:text-gray-100">
-        <div class="flex items-center justify-between">
+    <div class="grid grid-cols-3 p-4 text-gray-900 border-b border-gray-200 dark:border-gray-800 dark:text-gray-100">
+        <div class="flex items-center justify-between col-span-2 gap-4">
             <div class="flex items-center space-x-2">
                 <UIcon 
                     :name="transaction.type == 'Income' ? 'i-heroicons-arrow-up-right' : 'i-heroicons-arrow-down-right'" 

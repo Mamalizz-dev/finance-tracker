@@ -23,7 +23,7 @@
 
 // queries
 
-    const { isPending: transactionsIsPending } = useQuery<Transaction[]>({
+    const { isLoading: transactionsIsPending } = useQuery<Transaction[]>({
         queryKey: ['transactions'],
         queryFn: (): Promise<Transaction[]> => handleGetAllTransactions(current),
         select: (data: Transaction[]) => {
@@ -31,7 +31,7 @@
         }
     })
 
-    const { isPending: prevTransactionsIsPending } = useQuery<Transaction[]>({
+    const { isLoading: prevTransactionsIsPending } = useQuery<Transaction[]>({
         queryKey: ['prev-transactions'],
         queryFn: (): Promise<Transaction[]> => handleGetAllTransactions(previous),
         select: (data: Transaction[]) => {
@@ -77,8 +77,8 @@
 // methods
 
     const invalidData = () => {
-        queryClient.invalidateQueries({queryKey: ['transactions']})
-        queryClient.invalidateQueries({queryKey: ['prev-transactions']})
+        queryClient.resetQueries({queryKey: ['transactions']})
+        queryClient.resetQueries({queryKey: ['prev-transactions']})
     }
 
 </script>
@@ -129,7 +129,14 @@
                 <USkeleton v-for="i in 3" :key="i" class="w-full h-16" />
             </div>
 
-            <div v-else v-for="(transactions, date) in sortedTransactionsByDate" class="mb-5" :key="date">
+            <div v-else-if="!transactions.length" class="w-full gap-3 border-2 border-gray-900 border-dashed rounded-lg flex-col-center h-52 dark:border-gray-600">
+                <UIcon name="i-heroicons-exclamation-triangle" class="text-4xl text-gray-500 dark:text-gray-400" />
+                <span class="text-gray-500 dark:text-gray-400 text-sm">
+                    No Data In This Time Period
+                </span>
+            </div>
+
+            <div v-else v-for="(transactions, date) in sortedTransactionsByDate" :key="date">
                 <DailyTransaction 
                     :date="date" 
                     :transactions="transactions" 
