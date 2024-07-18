@@ -16,10 +16,6 @@ export default defineNuxtConfig({
         '@pinia/nuxt'
     ],
 
-    supabase: {
-        redirect: false
-    },
-
     imports: {
         dirs: ['~/types/*.ts'],
     },

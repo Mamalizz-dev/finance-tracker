@@ -1,7 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+// state
+
+
+</script>
 
 <template>
-    <header class="flex justify-between items-center py-8">
+    <header class="flex items-center justify-between py-8">
         <NuxtLink to="/" class="text-xl font-bold"> Finance Tracker </NuxtLink>
         <div>
             <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
