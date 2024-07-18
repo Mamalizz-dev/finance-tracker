@@ -5,6 +5,12 @@
     import { useMutation } from '@tanstack/vue-query';
     import { z } from 'zod'
 
+// meta
+
+    definePageMeta({
+        middleware: 'redirect-if-logged-in'
+    })
+
 // props
 
     const emailIsSent = ref(false);

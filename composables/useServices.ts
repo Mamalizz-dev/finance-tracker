@@ -9,9 +9,11 @@ export const useServices = () => {
     }
 
     const user = computed(() => store.user)
+    const isLoggedIn = computed(() => Object.keys(store.user).length > 0)
 
     return {
         user,
+        isLoggedIn,
         setUser
     }
 }
