@@ -4,9 +4,14 @@ export const useApis = () => {
 
     const { $supabases: supabases } = useNuxtApp()
 
-    const handleGetAllTransactions = async(): Promise<Transaction[]> => {
+    const handleGetAllTransactions = async(period: any): Promise<Transaction[]> => {
         try {
-            const { data, error } = await supabases.from('transactions').select().order('created_at', {ascending: false})
+            const { data, error } = await supabases
+                                                .from('transactions')
+                                                .select()
+                                                .gte('created_at', period.value.from.toISOString())
+                                                .lte('created_at', period.value.to.toISOString())
+                                                .order('created_at', {ascending: false})
             if(error) return []
             return data
         } catch (error) {

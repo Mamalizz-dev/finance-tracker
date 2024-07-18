@@ -4,12 +4,18 @@
 
     import { TIME_PERIOD_OPTIONS } from '~/constants'
     import type { Transaction } from '~/types'
-    import { useQuery } from '@tanstack/vue-query'
+    import { useQuery, useQueryClient } from '@tanstack/vue-query'
 
 // state
 
+    const queryClient = useQueryClient()
+
     const timePeriod = ref<string>(TIME_PERIOD_OPTIONS[0])
     const AddTransactionModalIsShow = ref<boolean>(false)
+    const transactions = ref<Transaction[]>([])
+    const prevTransactions = ref<Transaction[]>([])
+
+    const { current, previous } = useTimePeriod(timePeriod)
 
     const {
         handleGetAllTransactions
@@ -17,9 +23,20 @@
 
 // queries
 
-    const { data: transactions, isPending: isTransactionsPending } = useQuery<Transaction[]>({
+    const { isPending: transactionsIsPending } = useQuery<Transaction[]>({
         queryKey: ['transactions'],
-        queryFn: (): Promise<Transaction[]> => handleGetAllTransactions()
+        queryFn: (): Promise<Transaction[]> => handleGetAllTransactions(current),
+        select: (data: Transaction[]) => {
+            transactions.value = [...data]
+        }
+    })
+
+    const { isPending: prevTransactionsIsPending } = useQuery<Transaction[]>({
+        queryKey: ['prev-transactions'],
+        queryFn: (): Promise<Transaction[]> => handleGetAllTransactions(previous),
+        select: (data: Transaction[]) => {
+            prevTransactions.value = [...data]
+        }
     })
 
 // computed
@@ -44,12 +61,25 @@
     
     const income = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Income'))
     const expense = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Expense'))
+
+    const prevIncome = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Income'))
+    const prevExpense = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Expense'))
     
     const incomeCount = computed(() => income.value.length)
     const expenseCount = computed(() => expense.value.length)
 
     const incomeTotal = computed(() => income.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
     const expenseTotal = computed(() => expense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+
+    const prevIncomeTotal = computed(() => prevIncome.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+    const prevExpenseTotal = computed(() => prevExpense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+
+// methods
+
+    const invalidData = () => {
+        queryClient.invalidateQueries({queryKey: ['transactions']})
+        queryClient.invalidateQueries({queryKey: ['prev-transactions']})
+    }
 
 </script>
 
@@ -61,16 +91,16 @@
                 Summary
             </h1>
             <div>
-                <USelectMenu :options="TIME_PERIOD_OPTIONS" v-model="timePeriod" class="w-[10rem]" />
+                <USelectMenu :options="TIME_PERIOD_OPTIONS" v-model="timePeriod" class="w-[10rem]" @change="invalidData" />
             </div>
         </section>
         
         <section class="grid grid-cols-2 gap-10 lg:grid-cols-4 sm:gap-16">
 
-            <Trend color="green" title="Income" :amount="incomeTotal" :last-amount="4100" :loading="isTransactionsPending" />
-            <Trend color="red" title="Expense" :amount="expenseTotal" :last-amount="3800" :loading="isTransactionsPending" />
-            <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="isTransactionsPending" />
-            <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="isTransactionsPending" />
+            <Trend color="green" title="Income" :amount="incomeTotal" :last-amount="prevIncomeTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
+            <Trend color="red" title="Expense" :amount="expenseTotal" :last-amount="prevExpenseTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
+            <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="transactionsIsPending || prevTransactionsIsPending" />
+            <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="transactionsIsPending || prevTransactionsIsPending" />
             
         </section>
 
@@ -88,7 +118,7 @@
                 </div>
             </section>
 
-            <div v-if="isTransactionsPending" class="flex flex-col gap-4">
+            <div v-if="transactionsIsPending" class="flex flex-col gap-4">
                 <div class="flex justify-between w-full">
                     <USkeleton class="w-24 h-8" />
                     <div class="flex items-center gap-5">
