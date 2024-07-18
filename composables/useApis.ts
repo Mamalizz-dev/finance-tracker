@@ -80,7 +80,11 @@ export const useApis = () => {
         handleDeleteTransaction,
         handleLogin,
         handleLogOut,
+<<<<<<< HEAD
         handleUpdateUser,
+=======
+        handleUpdateUser
+>>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
     }
 
 }
