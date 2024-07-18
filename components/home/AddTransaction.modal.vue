@@ -18,6 +18,8 @@
 
     const props = defineProps<Props>();
 
+    const { modelValue } = toRefs(props)
+
 // state
 
     const form = ref()
@@ -35,7 +37,7 @@
 // computed
 
     const isOpen = computed({
-        get: () => props.modelValue,
+        get: () => modelValue.value,
         set: (value: boolean) => {
             if(!value){
                 emit("update:modelValue", value)
