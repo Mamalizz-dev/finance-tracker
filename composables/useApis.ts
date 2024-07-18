@@ -39,11 +39,26 @@ export const useApis = () => {
         }
     }
 
+    const handleLogin = async(email: string) => {
+        try {
+            const { error } = await supabases.auth.signInWithOtp({
+                email: email,
+                options: {
+                  emailRedirectTo: 'http://localhost:3000'
+                }
+            })
+            if(error) throw error
+            return
+        } catch (error) {
+            throw error
+        }
+    }
 
     return {
         handleGetAllTransactions,
         handleCreateTransaction,
-        handleDeleteTransaction
+        handleDeleteTransaction,
+        handleLogin
     }
 
 }

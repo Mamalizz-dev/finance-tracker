@@ -102,7 +102,7 @@
             onError: () => {
                 toast.add({
                     title: 'Failed To Delete Transaction',
-                    icon: 'i-heroicons-x-mark-circle',
+                    icon: 'i-heroicons-x-circle',
                     color: 'red'
                 })
                 isOpen.value = false
