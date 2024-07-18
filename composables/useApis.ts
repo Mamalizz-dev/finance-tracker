@@ -74,17 +74,24 @@ export const useApis = () => {
         }
     }
 
+    const handleUploadAvatar = async(data: {filename: string, file: File}) => {
+        try {
+            const { error } = await supabases.storage.from('avatars').upload(data.filename, data.file)
+            if(error) throw error
+            return
+        } catch (error) {
+            throw error
+        }
+    }
+
     return {
         handleGetAllTransactions,
         handleCreateTransaction,
         handleDeleteTransaction,
         handleLogin,
         handleLogOut,
-<<<<<<< HEAD
         handleUpdateUser,
-=======
-        handleUpdateUser
->>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
+        handleUploadAvatar
     }
 
 }

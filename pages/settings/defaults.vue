@@ -3,7 +3,7 @@
 // imports
 
     import { z } from "zod";
-    import { transactionViewOptions } from "~/constants";
+    import { TIME_PERIOD_OPTIONS } from "~/constants";
     import { useMutation } from '@tanstack/vue-query'
 
 // state
@@ -12,8 +12,8 @@
 
     const { user } = useServices()
 
-    const state = ref({
-        transactionView: user.value.user_metadata?.transaction_view ?? transactionViewOptions[1],
+    const settingData = ref<{transactionView: string}>({
+        transactionView: user.value.user_metadata?.transaction_view ?? TIME_PERIOD_OPTIONS[1],
     });
     const form = ref<HTMLFormElement>()
 
@@ -28,7 +28,7 @@
 // computed
 
     const schema = z.object({
-        transactionView: z.enum(transactionViewOptions),
+        transactionView: z.enum(TIME_PERIOD_OPTIONS),
     });
 
 // methods
@@ -38,7 +38,7 @@
 
         const data = {
             data: {
-                    transaction_view: state.value.transactionView,
+                transaction_view: settingData.value.transactionView,
             },
         }
 
@@ -54,9 +54,9 @@
 </script>
 
 <template>
-    <UForm :state="state" :schema="schema" ref="form" @submit.prevent="handleSubmitUpdate">
+    <UForm :state="settingData" :schema="schema" ref="form" @submit="handleSubmitUpdate">
         <UFormGroup label="Transaction View" class="mb-4" help="Choose how you would like to view transactions">
-            <USelect v-model="state.transactionView" :options="transactionViewOptions" />
+            <USelect v-model="settingData.transactionView" :options="TIME_PERIOD_OPTIONS" />
         </UFormGroup>
 
         <UButton type="submit" color="black" variant="solid" label="Save" size="md" class="w-[6rem] flex-center" :loading="updateIsPending" />

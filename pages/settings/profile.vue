@@ -10,11 +10,7 @@
     const { user } = useServices()
     const { toastSuccess, toastError } = useAppToast()
 
-<<<<<<< HEAD
     const userData = ref<{name: string, lastname: string, email: string}>({
-=======
-    const userData = ref<{name: string, email: string}>({
->>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
         name: user.value.user_metadata?.full_name || '',
         lastname: user.value.user_metadata?.last_name || '',
         email: user.value.email,
@@ -28,6 +24,7 @@
     const { isPending: updateIsPending, mutate: updateMutate } = useMutation({
         mutationFn: (data: any) => handleUpdateUser(data)
     })
+    
 
 // computed
 
@@ -44,32 +41,17 @@
 
         const data = {
             data: {
-<<<<<<< HEAD
                 full_name: userData.value.name,
                 last_name: userData.value.lastname
             }
         }
 
-=======
-                full_name: userData.value.name
-            }
-        }
-
-        if (userData.value.email !== user.value.email) {
-            data.email = userData.value.email
-        }
-
->>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
         updateMutate(data, {
             onSuccess: () => {
                 toastSuccess({title: 'Profile updated', description: 'Your profile has been updated'})
             },
             onError: (err: Error) => {
-<<<<<<< HEAD
                 toastError({title: 'Error in updating profile', description: err.message})
-=======
-                toastError({title: 'Error updating profile', description: err.message})
->>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
             }
         })
     }
@@ -80,7 +62,6 @@
     <UForm :state="userData" :schema="schema" ref="form" @submit="handleSubmitUpdate">
         <UFormGroup class="mb-4" label="Full Name" name="name" size="lg">
             <UInput v-model="userData.name" />
-<<<<<<< HEAD
         </UFormGroup>
 
         <UFormGroup class="mb-4" label="Full Name" name="name" size="lg">
@@ -89,12 +70,6 @@
 
         <UFormGroup class="mb-4" label="Email" name="email" size="lg" help="You will receive a confirmation email on both the old and the new addresses if you modify the email address">
             <UInput v-model="userData.email" disabled class="opacity-80" />
-=======
-        </UFormGroup>
-
-        <UFormGroup class="mb-4" label="Email" name="email" size="lg" help="You will receive a confirmation email on both the old and the new addresses if you modify the email address">
-            <UInput v-model="userData.email" />
->>>>>>> 4b588ed789e99a9e33560131053ab48698d2d172
         </UFormGroup>
 
         <UButton type="submit" color="black" variant="solid" label="Save" size="md" class="w-[6rem] flex-center" :loading="updateIsPending" />

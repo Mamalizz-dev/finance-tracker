@@ -16,8 +16,8 @@
             icon: 'i-heroicons-photo',
         },
         {
-            label: "Defaults Settings",
-            to: "/settings/defaults-settings",
+            label: "Defaults",
+            to: "/settings/defaults",
             icon: 'i-heroicons-wrench-screwdriver',
         }
     ];

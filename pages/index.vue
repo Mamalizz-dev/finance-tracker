@@ -11,7 +11,9 @@
     const { toastError } = useAppToast()
     const queryClient = useQueryClient()
 
-    const timePeriod = ref<string>(TIME_PERIOD_OPTIONS[0])
+    const { user } = useServices()
+
+    const timePeriod = ref<string>(user.value.user_metadata?.transaction_view ?? TIME_PERIOD_OPTIONS[0])
     const AddTransactionModalIsShow = ref<boolean>(false)
     const transactions = ref<Transaction[]>([])
     const prevTransactions = ref<Transaction[]>([])
