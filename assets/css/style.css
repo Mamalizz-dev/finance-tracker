@@ -1,4 +1,8 @@
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: "Inter";
-    @apply dark:bg-gray-900 bg-white;
+    @apply bg-white dark:bg-gray-900;
 }

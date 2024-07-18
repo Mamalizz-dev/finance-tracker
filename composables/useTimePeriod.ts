@@ -6,17 +6,17 @@ export const useTimePeriod = (period: Ref) => {
             case 'Yearly':
                 return {
                     from: startOfYear(new Date()),
-                    to: new Date()
+                    to: endOfYear(new Date())
                 }
             case 'Monthly':
                 return {
                     from: startOfMonth(new Date()),
-                    to: new Date()
+                    to: endOfMonth(new Date())
                 }
             case 'Daily':
                 return {
                     from: startOfDay(new Date()),
-                    to: new Date()
+                    to: endOfDay(new Date())
                 }
             }
         }

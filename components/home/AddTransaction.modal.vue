@@ -96,7 +96,8 @@
                     color: 'green'
                 })
                 isOpen.value = false
-                queryClient.invalidateQueries({queryKey: ['transactions']})
+                queryClient.resetQueries({queryKey: ['transactions']})
+                window.scrollTo({top: 0})
             },
             onError: () => {
                 toast.add({
