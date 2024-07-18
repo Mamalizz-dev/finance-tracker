@@ -54,7 +54,7 @@ export const useApis = () => {
         }
     }
 
-    const handleLoginOut = async() => {
+    const handleLogOut = async() => {
         try {
             const { error } = await supabases.auth.signOut()
             if(error) throw error
@@ -69,7 +69,7 @@ export const useApis = () => {
         handleCreateTransaction,
         handleDeleteTransaction,
         handleLogin,
-        handleLoginOut
+        handleLogOut
     }
 
 }

@@ -1,23 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     devtools: { enabled: true },
-    ssr: false,
-    modules: [
-        '@nuxt/ui',
-        ['@nuxtjs/google-fonts', {
-            families: {
-                'Inter': true,
-                download: true,
-                inject: false
-            },
-            display: 'swap'
-        }],
-        '@nuxtjs/supabase',
-        '@pinia/nuxt'
-    ],
+    modules: ['@nuxt/ui', ['@nuxtjs/google-fonts', {
+        families: {
+            'Inter': true,
+            download: true,
+            inject: false
+        },
+        display: 'swap'
+    }], '@nuxtjs/supabase', '@pinia/nuxt', "nuxt-marquee"],
 
     imports: {
         dirs: ['~/types/*.ts'],
+    },
+
+    supabase: {
+        redirect: false
     },
 
     css: [
