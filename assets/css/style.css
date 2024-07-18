@@ -6,3 +6,31 @@ body {
     font-family: "Inter";
     @apply bg-white dark:bg-gray-900;
 }
+
+/* animations */
+
+/* fade-up-down */
+
+.fade-up-down-enter-from,
+.fade-up-down-leave-to{
+    opacity: 0;
+}
+
+.fade-up-down-enter-from {
+    transform: translateY(-20px);
+}
+
+.fade-up-down-leave-to{
+    transform: translateY(20px);
+}
+
+.fade-up-down-enter-to,
+.fade-up-down-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fade-up-down-enter-active,
+.fade-up-down-leave-active {
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
