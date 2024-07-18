@@ -57,10 +57,7 @@
                     color: 'green'
                 })
                 queryClient.resetQueries({queryKey: ['transactions']})
-<<<<<<< HEAD
                 window.scrollTo({top: 0})
-=======
->>>>>>> d3e117fa77e35e891f25506d77f5fafb96bc811f
             },
             onError: () => {
                 toast.add({
