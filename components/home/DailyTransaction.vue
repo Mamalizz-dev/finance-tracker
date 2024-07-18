@@ -2,7 +2,7 @@
 
 // imports
 
-    import type { Transaction } from '~/types/index'
+    import type { Transaction } from '~/types'
 
 // props
 

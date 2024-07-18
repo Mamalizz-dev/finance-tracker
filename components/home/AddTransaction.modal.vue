@@ -3,7 +3,9 @@
 // imports
 
     import { CATEGORY_OPTIONS, TRANSACTION_OPTIONS } from '~/constants'
+    import type { Transaction } from '~/types';
     import { z } from 'zod'
+    import { useMutation, useQueryClient } from '@tanstack/vue-query';
 
 // emit
 
@@ -22,9 +24,11 @@
 
 // state
 
-    const form = ref()
+    const queryClient = useQueryClient()
+    const toast = useToast()
+    const form = ref<HTMLFormElement>()
 
-    const initialState = {
+    const initialState: Transaction = {
         type: undefined,
         amount: 0,
         created_at: undefined,
@@ -32,7 +36,15 @@
         category: undefined
     }
 
-    const newTransactionData = ref({...initialState})
+    const newTransactionData = ref<Transaction>({...initialState})
+
+    const { handleCreateTransaction } = useApis()
+
+// queries
+
+    const { isPending, mutate } = useMutation({
+        mutationFn: (data: Transaction) => handleCreateTransaction(data)
+    })
 
 // computed
 
@@ -72,8 +84,31 @@
 
 // methods
 
-    const save = async () => {
-        form.value.validate()
+    const save = () => {
+        console.log(22);
+        
+        if (form.value.errors.length) return
+
+        mutate({...newTransactionData.value}, {
+            onSuccess: () => {
+                toast.add({
+                    title: 'Transaction Created Successfully',
+                    icon: 'i-heroicons-check-circle',
+                    color: 'green'
+                })
+                isOpen.value = false
+                queryClient.invalidateQueries({queryKey: ['transactions']})
+            },
+            onError: () => {
+                toast.add({
+                    title: 'Failed To Delete Transaction',
+                    icon: 'i-heroicons-x-mark-circle',
+                    color: 'red'
+                })
+                isOpen.value = false
+            },
+        })
+
     }
 
     const resetForm = () => {
@@ -87,16 +122,16 @@
     <UModal v-model="isOpen">
         <UCard>
             <template #header> Add Transaction </template>
-            <UForm :state="newTransactionData" :schema="schema" ref="form" @submit.prevent="save">
-                <UFormGroup :required="true" label="Transaction Type" name="type" class="mb-4">
+            <UForm :state="newTransactionData" :schema="schema" ref="form" @submit="save">
+                <UFormGroup required label="Transaction Type" name="type" class="mb-4">
                     <USelect placeholder="Select the transaction type" :options="TRANSACTION_OPTIONS" v-model="newTransactionData.type" />
                 </UFormGroup>
 
-                <UFormGroup label="Amount" :required="true" name="amount" class="mb-4">
+                <UFormGroup label="Amount" required name="amount" class="mb-4">
                     <UInput type="number" placeholder="Amount" v-model.number="newTransactionData.amount" />
                 </UFormGroup>
 
-                <UFormGroup label="Transaction date" :required="true" name="created_at" class="mb-4">
+                <UFormGroup label="Transaction date" required name="created_at" class="mb-4">
                     <UInput type="date" icon="i-heroicons-calendar-days-20-solid" v-model="newTransactionData.created_at" />
                 </UFormGroup>
 
@@ -104,11 +139,11 @@
                     <UInput placeholder="Description" v-model="newTransactionData.description" />
                 </UFormGroup>
 
-                <UFormGroup :required="true" label="Category" name="category" class="mb-4">
+                <UFormGroup required label="Category" name="category" class="mb-4">
                     <USelect placeholder="Category" :options="CATEGORY_OPTIONS" v-model="newTransactionData.category" />
                 </UFormGroup>
 
-                <UButton type="submit" color="black" variant="solid" label="Save" />
+                <UButton type="submit" color="black" variant="solid" label="Save" :loading="isPending" />
             </UForm>
         </UCard>
     </UModal>

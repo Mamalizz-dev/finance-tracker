@@ -1,4 +1,4 @@
-import type { Transaction } from "~/types/index";
+import type { Transaction } from "~/types";
 
 export const useApis = () => {
 
@@ -6,9 +6,19 @@ export const useApis = () => {
 
     const handleGetAllTransactions = async(): Promise<Transaction[]> => {
         try {
-            const { data, error } = await supabases.from('transactions').select()
+            const { data, error } = await supabases.from('transactions').select().order('created_at', {ascending: false})
             if(error) return []
             return data
+        } catch (error) {
+            throw error
+        }
+    }
+
+    const handleCreateTransaction = async(newData: Transaction) => {
+        try {
+            const { data, error } = await supabases.from('transactions').upsert({...newData})
+            if(error) throw error
+            return
         } catch (error) {
             throw error
         }
@@ -26,6 +36,7 @@ export const useApis = () => {
 
     return {
         handleGetAllTransactions,
+        handleCreateTransaction,
         handleDeleteTransaction
     }
 

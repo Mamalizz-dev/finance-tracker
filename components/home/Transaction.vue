@@ -2,8 +2,7 @@
 
 // imports
 
-    import type { Transaction } from "~/types/index";
-    import { useApis } from '~/composables/useApis'
+    import type { Transaction } from "~/types";
     import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 // props
@@ -80,7 +79,7 @@
                     class="text-lg"
                     :class="transaction.type == 'Income' ? 'green' : 'red'"
                 />
-                <span>{{ transaction.description }}</span>
+                <span class="text-sm line-clamp-1">{{ transaction.description ? transaction.description : 'No Description' }}</span>
             </div>
 
             <div>
