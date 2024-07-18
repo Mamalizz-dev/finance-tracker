@@ -22,6 +22,14 @@
         }
     ];
 
+// life-cycle
+
+    onMounted(() => {
+        if(route.name == 'settings'){
+            navigateTo('/settings/profile')
+        }
+    })
+
     
 </script>
 
