@@ -3,7 +3,6 @@
 // state
 
     const user = useSupabaseUser()
-    const toast = useToast()
 
     const { setUser } = useServices()
 

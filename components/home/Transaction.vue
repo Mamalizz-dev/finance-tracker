@@ -18,7 +18,7 @@
 // state
 
     const queryClient = useQueryClient()
-    const toast = useToast()
+    const { toastSuccess, toastError } = useAppToast()
     
     const { currency } = useCurrency(transaction.value['amount']);
 
@@ -51,20 +51,12 @@
     const handleDelete = () => {
         mutate(transaction.value['id'], {
             onSuccess: () => {
-                toast.add({
-                    title: 'Transaction Deleted Successfully',
-                    icon: 'i-heroicons-check-circle',
-                    color: 'green'
-                })
+                toastSuccess({title: 'Transaction Deleted Successfully'})
                 queryClient.resetQueries({queryKey: ['transactions']})
                 window.scrollTo({top: 0})
             },
             onError: () => {
-                toast.add({
-                    title: 'Failed To Delete Transaction',
-                    icon: 'i-heroicons-x-circle',
-                    color: 'red'
-                })
+                toastError({title: 'Failed To Delete Transaction'})
             }
         })
     }

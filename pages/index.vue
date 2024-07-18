@@ -8,6 +8,7 @@
 
 // state
 
+    const { toastError } = useAppToast()
     const queryClient = useQueryClient()
 
     const timePeriod = ref<string>(TIME_PERIOD_OPTIONS[0])
@@ -15,6 +16,7 @@
     const transactions = ref<Transaction[]>([])
     const prevTransactions = ref<Transaction[]>([])
 
+    const { isLoggedIn } = useServices()
     const { current, previous } = useTimePeriod(timePeriod)
 
     const {
@@ -82,6 +84,14 @@
         window.scrollTo({top: 0})
     }
 
+    const handleAddModal = () => {
+        if(isLoggedIn.value){
+            AddTransactionModalIsShow.value = true
+        } else {
+            toastError({title: 'Login required', description: 'You need to login to your account',})
+        }
+    }
+
 </script>
 
 <template>
@@ -92,7 +102,7 @@
                 Summary
             </h1>
             <div>
-                <USelectMenu :options="TIME_PERIOD_OPTIONS" v-model="timePeriod" class="w-[10rem]" @change="invalidData" />
+                <USelectMenu :options="TIME_PERIOD_OPTIONS" v-model="timePeriod" class="w-[8rem]" @change="invalidData" v-if="isLoggedIn" />
             </div>
         </section>
         
@@ -107,7 +117,7 @@
 
         <section>
 
-            <section class="flex justify-between mb-10">
+            <div class="flex justify-between mb-10">
                 <div>
                     <h2 class="text-xl font-extrabold">Transactions</h2>
                     <div class="text-sm text-gray-500 dark:text-gray-400">
@@ -115,9 +125,9 @@
                     </div>
                 </div>
                 <div>
-                    <UButton icon="i-heroicons-plus-circle" color="white" variant="solid" label="Add" @click="AddTransactionModalIsShow = true" />
+                    <UButton icon="i-heroicons-plus-circle" color="white" variant="solid" label="Add" @click="handleAddModal" />
                 </div>
-            </section>
+            </div>
 
             <div v-if="transactionsIsPending" class="flex flex-col gap-4">
                 <div class="flex justify-between w-full">

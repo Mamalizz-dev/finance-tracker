@@ -25,7 +25,7 @@
 // state
 
     const queryClient = useQueryClient()
-    const toast = useToast()
+    const { toastSuccess, toastError } = useAppToast()
     const form = ref<HTMLFormElement>()
 
     const initialState: Transaction = {
@@ -90,21 +90,13 @@
 
         mutate({...newTransactionData.value}, {
             onSuccess: () => {
-                toast.add({
-                    title: 'Transaction Created Successfully',
-                    icon: 'i-heroicons-check-circle',
-                    color: 'green'
-                })
+                toastSuccess({title: 'Transaction Created Successfully'})
                 isOpen.value = false
                 queryClient.resetQueries({queryKey: ['transactions']})
                 window.scrollTo({top: 0})
             },
             onError: () => {
-                toast.add({
-                    title: 'Failed To Delete Transaction',
-                    icon: 'i-heroicons-x-circle',
-                    color: 'red'
-                })
+                toastError({title: 'Failed To Delete Transaction'})
                 isOpen.value = false
             },
         })

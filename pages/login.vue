@@ -19,7 +19,7 @@
 
 // state
 
-    const toast = useToast()
+    const { toastSuccess, toastError } = useAppToast()
 
     const userInfo = ref<{email: string}>({
         email: ''
@@ -49,19 +49,10 @@
         mutate(userInfo.value['email'], {
             onSuccess: () => {
                 emailIsSent.value = true
-                toast.add({
-                    title: 'Email Sent Successfully',
-                    description: 'Email includes login link',
-                    icon: 'i-heroicons-check-circle',
-                    color: 'green'
-                })
+                toastSuccess({title: 'Email Sent Successfully', description: 'Email includes login link'})
             },
             onError: () => {
-                toast.add({
-                    title: 'Something went wrong',
-                    icon: 'i-heroicons-x-circle',
-                    color: 'red'
-                })
+                toastError({title: 'Something went wrong'})
             }
         })
     }

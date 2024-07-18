@@ -6,7 +6,7 @@
 
 // state
 
-    const toast = useToast()
+    const { toastSuccess, toastError } = useAppToast()
     const router = useRouter()
     const route = useRoute()
 
@@ -31,20 +31,11 @@
                     mutateLogOut(undefined, {
                         onSuccess: () => {
                             setUser({})
-                            toast.add({
-                                title: 'Successfully Logged Out',
-                                icon: 'i-heroicons-check-circle',
-                                color: 'green'
-                            })
+                            toastSuccess({title: 'Successfully Logged Out'})
                             router.push({name: 'login'})
                         }, 
                         onError: () => {
-                            toast.add({
-                                title: 'Failed Logged Out',
-                                description: 'Please try again',
-                                icon: 'i-heroicons-x-circle',
-                                color: 'red'
-                            })
+                            toastError({title: 'Failed Logged Out', description: 'Please try again'})
                         }
                     })
                 }
