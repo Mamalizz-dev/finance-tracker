@@ -12,7 +12,8 @@ export default defineNuxtConfig({
             },
             display: 'swap'
         }],
-        "@nuxtjs/supabase"
+        '@nuxtjs/supabase',
+        '@pinia/nuxt'
     ],
 
     supabase: {
