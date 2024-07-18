@@ -64,12 +64,23 @@ export const useApis = () => {
         }
     }
 
+    const handleUpdateUser = async(data: any) => {
+        try {
+            const { error } = await supabases.auth.updateUser(data)
+            if(error) throw error
+            return
+        } catch (error) {
+            throw error
+        }
+    }
+
     return {
         handleGetAllTransactions,
         handleCreateTransaction,
         handleDeleteTransaction,
         handleLogin,
-        handleLogOut
+        handleLogOut,
+        handleUpdateUser,
     }
 
 }
