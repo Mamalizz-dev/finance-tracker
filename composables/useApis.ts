@@ -3,7 +3,7 @@ import type { Transaction } from "~/types";
 export const useApis = () => {
 
     const { $supabases: supabases } = useNuxtApp()
-    const redirectUrl = useRuntimeConfig().public.baseUrl
+    const config = useRuntimeConfig()
 
     const handleGetAllTransactions = async(period: any): Promise<Transaction[]> => {
         try {
@@ -45,7 +45,7 @@ export const useApis = () => {
             const { error } = await supabases.auth.signInWithOtp({
                 email: email,
                 options: {
-                  emailRedirectTo: `${redirectUrl}/confirm`
+                  emailRedirectTo: `${config.public.baseUrl}/confirm-login`
                 }
             })
             if(error) throw error
