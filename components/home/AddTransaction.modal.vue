@@ -14,13 +14,14 @@
 // props
 
     interface Props {
-        modelValue: Boolean
+        modelValue: Boolean,
+        transaction?: Transaction
     }
 
 
     const props = defineProps<Props>();
 
-    const { modelValue } = toRefs(props)
+    const { modelValue, transaction } = toRefs(props)
 
 // state
 
@@ -28,15 +29,24 @@
     const { toastSuccess, toastError } = useAppToast()
     const form = ref<HTMLFormElement>()
 
-    const initialState: Transaction = {
-        type: undefined,
-        amount: 0,
-        created_at: undefined,
-        description: undefined,
-        category: undefined
-    }
+    const isEditing = computed(() => !!transaction.value)
 
-    const newTransactionData = ref<Transaction>({...initialState})
+    const initialState: Transaction = isEditing.value ? 
+        {
+            type: transaction.value?.type,
+            amount: transaction.value?.amount,
+            created_at: transaction.value?.created_at.split('T')[0],
+            description: transaction.value?.description,
+            category: transaction.value?.category
+        } : {
+            type: undefined,
+            amount: 0,
+            created_at: undefined,
+            description: undefined,
+            category: undefined
+        }
+
+    const newTransactionData = ref<any>({ ...initialState })
 
     const { handleCreateTransaction } = useApis()
 
@@ -88,15 +98,15 @@
         
         if (form.value.errors.length) return
 
-        mutate({...newTransactionData.value}, {
+        mutate({...newTransactionData.value, id: transaction.value?.id}, {
             onSuccess: () => {
-                toastSuccess({title: 'Transaction Created Successfully'})
+                toastSuccess({title: isEditing.value ? 'Transaction Updated Successfully' : 'Transaction Created Successfully'})
                 isOpen.value = false
                 queryClient.resetQueries({queryKey: ['transactions']})
                 window.scrollTo({top: 0})
             },
             onError: () => {
-                toastError({title: 'Failed To Delete Transaction'})
+                toastError({title: isEditing.value ? 'Failed To Updated Transaction' : 'Failed To Created Transaction'})
                 isOpen.value = false
             },
         })
@@ -113,10 +123,10 @@
 <template>
     <UModal v-model="isOpen">
         <UCard>
-            <template #header> Add Transaction </template>
+            <template #header> {{ isEditing ? 'Edit' : 'Add' }} Transaction </template>
             <UForm :state="newTransactionData" :schema="schema" ref="form" @submit="save">
                 <UFormGroup required label="Transaction Type" name="type" class="mb-4">
-                    <USelect placeholder="Select the transaction type" :options="TRANSACTION_OPTIONS" v-model="newTransactionData.type" />
+                    <USelect :disabled="isEditing" placeholder="Select the transaction type" :options="TRANSACTION_OPTIONS" v-model="newTransactionData.type" />
                 </UFormGroup>
 
                 <UFormGroup label="Amount" required name="amount" class="mb-4">

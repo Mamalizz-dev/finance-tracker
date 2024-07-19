@@ -21,13 +21,14 @@
     const { toastSuccess, toastError } = useAppToast()
     
     const { currency } = useCurrency(transaction.value['amount']);
+    const AddTransactionModalIsShow = ref<boolean>(false)
 
     const items = [
         [
             {
                 label: "Edit",
                 icon: "i-heroicons-pencil-square-20-solid",
-                click: () => console.log("Edit"),
+                click: () => AddTransactionModalIsShow.value = true
             },
             {
                 label: "Delete",
@@ -84,6 +85,7 @@
             <span>{{ currency }}</span>
             <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
                 <UButton color="white" variant="ghost" trailing-icon="i-heroicons-list-bullet" class="transition-all hover:ring-2 hover:ring-gray-700" :loading="isPending" :disabled="isPending" />
+                <AddTransactionModal v-model="AddTransactionModalIsShow" :transaction="transaction" />
             </UDropdown>
         </div>
     </div>
