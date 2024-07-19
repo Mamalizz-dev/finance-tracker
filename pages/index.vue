@@ -66,14 +66,26 @@
     const income = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Income'))
     const expense = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Expense'))
 
+    const investments = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Investments'))
+    const savings = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Savings'))
+    
     const prevIncome = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Income'))
     const prevExpense = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Expense'))
+
+    const prevInvestments = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Investments'))
+    const prevSavings = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Savings'))
     
     const incomeCount = computed(() => income.value.length)
     const expenseCount = computed(() => expense.value.length)
 
+    const investmentsTotal = computed(() => investments.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+    const savingsTotal = computed(() => savings.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+
     const incomeTotal = computed(() => income.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
     const expenseTotal = computed(() => expense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+
+    const prevInvestmentsTotal = computed(() => prevInvestments.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
+    const prevSavingsTotal = computed(() => prevSavings.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
 
     const prevIncomeTotal = computed(() => prevIncome.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
     const prevExpenseTotal = computed(() => prevExpense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
@@ -112,8 +124,8 @@
 
             <Trend color="green" title="Income" :amount="incomeTotal" :last-amount="prevIncomeTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
             <Trend color="red" title="Expense" :amount="expenseTotal" :last-amount="prevExpenseTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
-            <Trend color="green" title="Investments" :amount="4000" :last-amount="3000" :loading="transactionsIsPending || prevTransactionsIsPending" />
-            <Trend color="red" title="Saving" :amount="4000" :last-amount="4100" :loading="transactionsIsPending || prevTransactionsIsPending" />
+            <Trend color="green" title="Investments" :amount="investmentsTotal" :last-amount="prevInvestmentsTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
+            <Trend color="red" title="Saving" :amount="savingsTotal" :last-amount="prevSavingsTotal" :loading="transactionsIsPending || prevTransactionsIsPending" />
             
         </section>
 
