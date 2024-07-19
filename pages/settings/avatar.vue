@@ -7,10 +7,12 @@
 // state
 
     const { user } = useServices()
+    const { url } = useAvatarUrl()
+    const currentAvatar = ref<string>(user.value.user_metadata?.avatar_url || '')
     const { toastSuccess, toastError } = useAppToast();
     const fileInput = ref<any>();
 
-    const { handleUploadAvatar, handleUpdateUser } = useApis()
+    const { handleUploadAvatar, handleUpdateUser, handleDeleteAvatar } = useApis()
 
 // queries
 
@@ -20,6 +22,10 @@
 
     const { isPending: updateIsPending, mutate: updateMutate } = useMutation({
         mutationFn: (data: any) => handleUpdateUser(data)
+    })
+
+    const { isPending: deleteAvatarIsPending, mutate: deleteAvatarMutate } = useMutation({
+        mutationFn: (filename: string) => handleDeleteAvatar(filename)
     })
 
 // methods
@@ -37,18 +43,22 @@
 
         uploadMutate({filename, file}, {
             onSuccess: () => {
-                toastSuccess({title: 'Avatar Uploaded Successfully'})
-
+                
                 const data = {
                     data: {
-                        avatar_url: userData.value.name,
+                        avatar_url: filename,
                     }
                 }
-
-
-                updateMutate({
-
+                
+                updateMutate(data, {
+                    onSuccess: () => {
+                        toastSuccess({title: 'Avatar Updated Successfully'})
+                    }
                 })
+
+                if(currentAvatar.value){
+                    deleteAvatarMutate(currentAvatar.value)
+                }
             },
             onError: () => {
                 toastError({title: 'Failed to upload avatar', description: 'Please try again'})
@@ -61,8 +71,8 @@
     <div>
         <div class="mb-4">
             <UFormGroup label="Current avatar" class="w-full" help="This would be blank by default">
-                <USkeleton class="rounded-full size-[5rem]" v-if="" />
-                <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" size="3xl" class="mt-2" />
+                <USkeleton class="mt-2 mb-[18px] rounded-full size-20 shrink-0" v-if="uploadIsPending || updateIsPending" />
+                <UAvatar v-else :src="url" size="3xl" class="mt-2" />
             </UFormGroup>
         </div>
 

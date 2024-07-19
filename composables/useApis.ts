@@ -84,6 +84,16 @@ export const useApis = () => {
         }
     }
 
+    const handleDeleteAvatar = async(filename: string) => {
+        try {
+            const { error } = await supabases.storage.from('avatars').remove([filename])
+            if(error) throw error
+            return
+        } catch (error) {
+            throw error
+        }
+    }
+
     return {
         handleGetAllTransactions,
         handleCreateTransaction,
@@ -91,7 +101,8 @@ export const useApis = () => {
         handleLogin,
         handleLogOut,
         handleUpdateUser,
-        handleUploadAvatar
+        handleUploadAvatar,
+        handleDeleteAvatar
     }
 
 }

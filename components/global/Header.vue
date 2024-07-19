@@ -11,6 +11,7 @@
     const route = useRoute()
 
     const { user, isLoggedIn, setUser } = useServices()
+    const { url } = useAvatarUrl()
 
     const items = [
         [{
@@ -58,7 +59,7 @@
         <NuxtLink to="/" class="text-xl font-bold"> Finance Tracker </NuxtLink>
         <div>
             <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' }, width: 'w-64' }" v-if="isLoggedIn">
-                <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
+                <UAvatar :src="url" alt="Avatar" />
 
                 <template #account="{ item }">
                     
