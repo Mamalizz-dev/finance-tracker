@@ -14,7 +14,6 @@
 // props
 
     const emailIsSent = ref(false);
-    
     const { handleLogin } = useApis()
 
 // state
