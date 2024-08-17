@@ -59,7 +59,7 @@
 </script>
 
 <template>
-    <div class="max-w-[34rem] mx-auto">
+    <div class="max-w-[34rem] h-[calc(100svh-15.75rem)] flex-center mx-auto">
         <Transition name="fade-up-down" mode="out-in">
             <UCard v-if="!emailIsSent" class="w-full">
                 <template #header>
@@ -89,7 +89,7 @@
 
                 <div class="gap-3 pb-3 text-center flex-col-center">
                     <UIcon name="i-heroicons-check-circle" class="mb-2 text-green-500 size-24" />
-                    <p class="mb-4">We have sent an email to <strong>rmsil@email.com</strong> with a link to sign-in.</p>
+                    <p class="mb-4">We have sent an email to <strong>{{ userInfo.email }}</strong> with a link to sign-in.</p>
                     <p class="text-sm"><strong class="text-green-500">Important:</strong> The link will expire in 5 minutes.</p>
                 </div>
             </UCard>

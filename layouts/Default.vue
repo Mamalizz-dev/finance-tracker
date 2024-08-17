@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="container max-w-5xl">
+    <div class="container max-w-5xl min-h-[100svh]">
 
         <Header />
 

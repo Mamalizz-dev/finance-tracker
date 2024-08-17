@@ -43,6 +43,19 @@
         }
     })
 
+    const { 
+        prevIncomeTotal,
+        prevExpenseTotal,
+        prevInvestmentsTotal,
+        prevSavingsTotal,
+        incomeTotal,
+        expenseTotal,
+        investmentsTotal,
+        savingsTotal,
+        incomeCount,
+        expenseCount
+    } = useTrendIndicator({prev: prevTransactions.value, current: transactions.value})
+
 // computed
 
     const sortedTransactionsByDate = computed(() => {
@@ -62,33 +75,6 @@
         return group
 
     })
-    
-    const income = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Income'))
-    const expense = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Expense'))
-
-    const investments = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Investments'))
-    const savings = computed(() => transactions.value.filter((t: Transaction) => t.type === 'Savings'))
-    
-    const prevIncome = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Income'))
-    const prevExpense = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Expense'))
-
-    const prevInvestments = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Investments'))
-    const prevSavings = computed(() => prevTransactions.value.filter((t: Transaction) => t.type === 'Savings'))
-    
-    const incomeCount = computed(() => income.value.length)
-    const expenseCount = computed(() => expense.value.length)
-
-    const investmentsTotal = computed(() => investments.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-    const savingsTotal = computed(() => savings.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-
-    const incomeTotal = computed(() => income.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-    const expenseTotal = computed(() => expense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-
-    const prevInvestmentsTotal = computed(() => prevInvestments.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-    const prevSavingsTotal = computed(() => prevSavings.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-
-    const prevIncomeTotal = computed(() => prevIncome.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
-    const prevExpenseTotal = computed(() => prevExpense.value.reduce((sum: number, transaction: Transaction) => sum + transaction.amount, 0))
 
 // methods
 

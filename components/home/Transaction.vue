@@ -70,14 +70,14 @@
             <div class="flex items-center space-x-2">
                 <UIcon 
                     :name="transaction.type == 'Income' ? 'i-heroicons-arrow-up-right' : 'i-heroicons-arrow-down-right'" 
-                    class="text-lg"
+                    class="text-lg shrink-0"
                     :class="transaction.type == 'Income' ? 'green' : 'red'"
                 />
-                <span class="text-sm line-clamp-1">{{ transaction.description ? transaction.description : 'No Description' }}</span>
+                <span class="pr-5 text-sm line-clamp-1">{{ transaction.description ? transaction.description : 'No Description' }}</span>
             </div>
 
             <div>
-                <UBadge color="white" v-if="transaction.category">{{ transaction.category }}</UBadge>
+                <UBadge class="hidden lg:block" color="white" v-if="transaction.category">{{ transaction.category }}</UBadge>
             </div>
         </div>
 
