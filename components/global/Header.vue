@@ -55,7 +55,7 @@
 </script>
 
 <template>
-    <header class="flex items-center justify-between py-8">
+    <header class="flex items-center justify-between py-5 lg:py-8">
         <NuxtLink to="/" class="text-xl font-bold"> Finance Tracker </NuxtLink>
         <div>
             <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' }, width: 'w-64' }" v-if="isLoggedIn">

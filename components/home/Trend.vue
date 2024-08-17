@@ -42,14 +42,14 @@
 
         <div class="font-semibold mb-0.5" :class="trendingUp ? 'green' : 'red'">{{ title }}</div>
 
-        <div class="text-2xl font-bold text-black dark:text-white mb-2">
-            <USkeleton class="h-8 w-full" v-if="loading" />
-            <div v-else>{{ currency }}</div>
+        <div class="mb-2 text-2xl font-bold text-black dark:text-white">
+            <USkeleton class="w-full h-8" v-if="loading" />
+            <div v-else class="">{{ currency }}</div>
         </div>
 
         <div>
-            <USkeleton class="h-6 w-full" v-if="loading" />
-            <div v-else class="flex space-x-2 items-center text-sm">
+            <USkeleton class="w-full h-6" v-if="loading" />
+            <div v-else class="flex items-center space-x-2 text-sm">
                 <UIcon 
                     :name="trendingUp ? 'i-heroicons-arrow-trending-up' : 'i-heroicons-arrow-trending-down'" 
                     class="w-6 h-6" 

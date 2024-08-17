@@ -7,7 +7,7 @@
 
         <Header />
 
-        <main class="my-10">
+        <main class="my-6 lg:my-10">
             <slot />
         </main>
     </div>

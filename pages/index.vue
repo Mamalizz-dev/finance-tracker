@@ -98,7 +98,7 @@
     <div class="flex flex-col gap-10">
 
         <section class="flex items-center justify-between">
-            <h1 class="text-3xl font-extrabold lg:text-4xl">
+            <h1 class="text-2xl font-extrabold lg:text-4xl">
                 Summary
             </h1>
             <div>
